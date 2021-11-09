@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+    <title>Holiday API</title>
+    <meta charset="utf-8"/>
+    <script>
+        function getHolidays() {
+        request = new XMLHttpRequest();
+        console.log("1 - request object created");
+        request.open("GET", "https://date.nager.at/api/v2/publicholidays/2020/US", true)
+
+        console.log("2 - opened request file");
+
+        request.onreadystatechange = function() {
+        console.log("3 - readystatechange event fired.");
+ 
+        if (request.readyState == 4 && request.status == 200) {
+            console.log("5 - response received");
+            result = request.responseText;
+            alert(result);
+            data = JSON.parse(result);
+            document.getElementById("data").innerHTML =data; 
+            //document.getElementById("data").innerHTML ="current temp in boston: " + weather["current"]["temp"]; 
+        } else if (request.readyState == 4 && request.status != 200) {
+            document.getElementById("data").innerHTML = "Something is wrong!  Check the logs to see where this went off the rails";
+        } else if (request.readyState == 3) {
+            document.getElementById("data").innerHTML = "Too soon!  Try again";
+        }
+    }
+    // Step 4: fire off the HTTP request
+    request.send();
+    console.log("4 - Request sent");
+    }
+    </script>
+</head>
+
+<body onload="getHolidays()">
+
+	<h1>Holidays</h1>
+	<div id="data">Loading...</div>
+</body>
+</html>
